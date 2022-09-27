@@ -4,10 +4,10 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// create a user using "/api/auth/createuser" , no login required
 
 const JWT_SECRET = "somil$$agrawal$";
 
+// ROUTER 1  create a user using "/api/auth/createuser" , no login required
 router.post('/createuser',[
     body('name', 'Enter a valid name').isLength({ min: 3 }),
     body('email', 'Enter a valid email').isEmail(),
@@ -42,7 +42,7 @@ router.post('/createuser',[
      
 })
 
-// Authentication"/api/auth/login" 
+// ROUTER 2 Authentication"/api/auth/login" 
 router.post('/login',[
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password can not be blank ').exists()
@@ -76,6 +76,19 @@ router.post('/login',[
      res.status(500).send("some error occures")  
      }
      
- })
+})
+ 
+//ROUTER 3 get user login detail by user logged
+router.post('/getuser', async (req, res) => {
+     try {
+            const userid = 'todo'   
+           const user = await User.findById(userid).select('-password')
+          
+      } catch (error) {
+           console.error(error.message)
+     res.status(500).send("some error occures")  
+      }
+})
+
 
 module.exports = router  
