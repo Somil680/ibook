@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/User')
+const fetchuser = require('../middleware/fetchuser')
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -78,11 +79,12 @@ router.post('/login',[
      
 })
  
-//ROUTER 3 get user login detail by user logged
-router.post('/getuser', async (req, res) => {
+//ROUTER 3 get user login detail by user logged api/auth/getuser
+router.post('/getuser',fetchuser ,  async (req, res) => {
      try {
-            const userid = 'todo'   
-           const user = await User.findById(userid).select('-password')
+            const userid = req.user.id   
+          const user = await User.findById(userid).select('-password')
+          res.send(user);
           
       } catch (error) {
            console.error(error.message)
